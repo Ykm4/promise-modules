@@ -2,12 +2,12 @@ import { useState } from 'react'
 import './App.css'
 import PQueue from 'p-queue'
 
+// 同時実行数を4に設定
 const queue = new PQueue({ concurrency: 4 })
 
 const fetchSomething = () =>
   new Promise((resolve) => {
-    console.log('fetchSomething')
-    setTimeout(resolve, 1000)
+    setTimeout(resolve, 3000)
   })
 
 function App() {
@@ -30,10 +30,8 @@ function App() {
       setWaiting((prev) => prev.filter((id) => id !== taskId))
       setProcessing((prev) => [...prev, taskId])
 
-      console.log('処理開始時間', taskId)
-      // 2秒かかる処理がスタート
+      // 3秒かかる処理がスタート
       await fetchSomething()
-      console.log('処理終了時間', new Date().toISOString())
 
       // タスクが完了すると、そのタスクIDはprocessingリストから削除され、doneリストに追加される
       setProcessing((prev) => prev.filter((id) => id !== taskId))
